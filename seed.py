@@ -50,16 +50,17 @@ def load_movies():
         item = row.split("|")
         # print(item)
         movie_id = item[0]
-
+        title = item[1]
         released_str = item[2]
+        imdb_url = item[3]
         #print (released_str)
         if released_str:
             released_at = datetime.datetime.strptime(released_str, "%d-%b-%Y")
         else:
               released_at = None
 
-        movie = Movie(movie_id=movie_id,
-                    released_at=released_at)
+        movie = Movie(movie_id=movie_id,title = title,
+                    released_at=released_at,imdb_url = imdb_url)
 
         # We need to add to the session or it won't ever be smovies (movie_id, title, released_at, imdb_url) VALUES (%(movie_id)s, %(title)s, %(released_at)s, %(imdb_url)s)'] [parameters: ({'movie_id': '1', 'title': None, 'released_at': datetime.datetime(1995, 1, 1, 0, 0), 'imdb_url': None}, {'movie_id': '2', 'title': None, 'released_at': datetime.datetime(1995, 1, 1, 0, 0), 'imdb_url': None}, {'movie_id': '3', 'title': None, 'released_at': datetime.datetime(1995, 1, 1, 0, 0), 'imdb_url': None}, {'movie_id': '4', 'title': None, 'released_at': datetime.datetime(1995, 1, 1, 0, 0), 'imdb_url': None}, {'movie_id': '5', 'title': None, 'released_at': datetime.datetime(1995, 1, 1, 0, 0), 'imdb_url': None}, {'movie_id': '6', 'title': None, 'released_at': datetime.datetime(1995, 1, 1, 0, 0), 'imdb_url': None}, {'movie_id': '7', 'title': None, 'released_at': datetime.datetime(1995, 1, 1, 0, 0), 'imdb_url': None}, {'movie_id': '8', 'title': None, 'released_at': datetime.datetime(1995, 1, 1, 0, 0), 'imdb_url': None}  ... displaying 10 of 1681 total bound parameter sets ...  {'movie_id': '1681', 'title': None, 'released_at': datetime.datetime(1994, 1, 1, 0, 0), 'imdb_url': None}, {'movie_id': '1682tored
         db.session.add(movie)
@@ -81,10 +82,10 @@ def load_ratings():
     # Read u.user file and insert data
     for row in open("seed_data/u.data"):
         row = row.rstrip()
-        user_id, movie_id, score, timestamp = row.split("\t")
+        rating_id, movie_id, user_id, score = row.split("\t")
 
         rating = Rating(user_id=user_id,
-                    movie_id=movie_id)
+                    movie_id=movie_id, score = score, rating_id = rating_id)
 
         # We need to add to the session or it won't ever be stored
         db.session.add(rating)
