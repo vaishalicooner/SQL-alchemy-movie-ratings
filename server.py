@@ -29,6 +29,9 @@ def user_list():
     """Show list of users."""
 
     users= User.query.all()
+    if 'user_id' in session:
+        print('User_id is {}:'.format(session['user_id']))
+
     return render_template("user_list.html", users=users)
 
 @app.route("/register", methods= ["GET"])
@@ -44,8 +47,45 @@ def register_process():
     email = request.form.get("email")
     password = request.form.get("password")
 
-    return render_template("/", email=email, password=password)
+    user_add = User(email= email, password= password)
+    db.session.add(user_add)
+    db.session.commit()
 
+
+    return redirect("/")
+
+@app.route("/login_form")
+def login_form():
+
+    return render_template("login_form.html")
+
+@app.route("/login_form", methods = ["POST"])
+def logged_in():
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = User.query.filter_by(email = email).first()
+
+    if not user:
+        flash("No such user")
+        return redirect("/login_form")
+
+    if user.password == password:
+        session['user_id']= user.user_id
+        return redirect('/users/{{user.user_id}}')
+    else:
+        flash("Incorrect password")
+        return redirect("/login_form")
+
+@app.route("/logged_out")
+def logged_out():
+    
+    session.pop('user_id')
+    flash("Logged-out")
+    
+
+    return redirect('/')
 
 
 if __name__ == "__main__":
