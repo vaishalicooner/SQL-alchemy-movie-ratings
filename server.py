@@ -73,11 +73,17 @@ def logged_in():
 
     if user.password == password:
         session['user_id']= user.user_id
-        return redirect('/users/{{user.user_id}}')
+        return redirect('/users/{}'.format(user.user_id))
     else:
         flash("Incorrect password")
         return redirect("/login_form")
 
+
+@app.route('/users/<int:user_id>')
+def login(user_id):
+
+    user = User.query.get(user_id)
+    return render_template("users.html", user_id = user.user_id, age= user.age, zipcode = user.zipcode, ratings = user.ratings)
 @app.route("/logged_out")
 def logged_out():
     

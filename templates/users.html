@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>{{user.user_id}} </h1> <br>
-<p> Age: {{user.age}}</p><br>
-<p> Zipcode: {{user.zipcode}}</p><br>
+<h1>{{user_id}} </h1> <br>
+<p> Age: {{age}}</p><br>
+<p> Zipcode: {{zipcode}}</p><br>
 
-{% if user.ratings %}
+{% if ratings %}
 
     <h2>Ratings</h2>
 
     <ul>
-    {% for rating in user.ratings %}
+    {% for rating in ratings %}
       <li>
         <a href="/movies/{{ rating.movie_id }}">{{ rating.movie.title }}</a>
         was rated {{ rating.score }}
